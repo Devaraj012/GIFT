@@ -4,6 +4,8 @@ import mariadb,pandas as pd
 from dotenv import load_dotenv
 load_dotenv(dotenv_path=r"C:\Users\devar\OneDrive\Documents\Code\GIFT\.env")
 
+load_dotenv()
+
 DB_CONFIG = {
     "host": os.getenv("DB_HOST"),
     "port": int(os.getenv("DB_PORT")) if os.getenv("DB_PORT") else None,  # Prevent NoneType error
@@ -12,7 +14,7 @@ DB_CONFIG = {
     "database": os.getenv("DB_NAME")
 }
 
-cookie_ticket = os.getenv("COOKIE_TICKET")
+cookie_ticket = os.getenv("IBT_COOKIE")
 
 conn = mariadb.connect(**DB_CONFIG)
 cursor = conn.cursor(dictionary=True)
@@ -115,7 +117,7 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-             ci.checklist_name = 'No of Prospects Identified' and cir.input<>0 and u.id in (8,10,27)
+             ci.checklist_name = 'No of Prospects Identified' and cir.input<>0 and u.id in (8,10,27,49)
         ORDER BY 
             cir.created_at DESC;
     """,
@@ -155,7 +157,7 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of prospects called' and cir.input<>0 and u.id in (8,10,27)
+            ci.checklist_name = 'No of prospects called' and cir.input<>0 and u.id in (8,10,27,49)
 
         ORDER BY
         cir.created_at desc""",
@@ -175,7 +177,7 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of prospects qualified' and cir.input<>0 and u.id in (8,10,27)
+            ci.checklist_name = 'No of prospects qualified' and cir.input<>0 and u.id in (8,10,27,49)
 
         ORDER BY
             cir.created_at desc """,
@@ -195,7 +197,7 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of meetings scheduled' and cir.input<>0 and u.id in (8,10,27)
+            ci.checklist_name = 'No of meetings scheduled' and cir.input<>0 and u.id in (8,10,27,49)
 
         ORDER BY
         cir.created_at desc      
@@ -216,7 +218,7 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of meetings attended' and cir.input<>0 and u.id in (8,10,27,16,22)
+            ci.checklist_name = 'No of meetings attended' and cir.input<>0 and u.id in (8,10,27,16,22,49)
 
         ORDER BY
         cir.created_at desc
@@ -237,7 +239,7 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of follow up calls made' and cir.input<>0 and u.id in (8,10,27)
+            ci.checklist_name = 'No of follow up calls made' and cir.input<>0 and u.id in (8,10,27,49)
 
         ORDER BY
         cir.created_at desc
@@ -258,7 +260,7 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of closure made' and cir.input<>0 and u.id in (8,10,27)
+            ci.checklist_name = 'No of closure made' and cir.input<>0 and u.id in (8,10,27,49)
 
         ORDER BY
         cir.created_at desc
@@ -279,7 +281,7 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            (ci.checklist_name = 'No of Tasks worked on' OR ci.checklist_name = 'No of Tasks worked' ) AND cir.input <> 0
+            (ci.checklist_name = 'No of Tasks worked on' OR ci.checklist_name = 'No of Tasks worked' OR ci.checklist_name='Task Worked') AND cir.input <> 0
         ORDER BY 
             cir.created_at DESC;
     """,
@@ -575,7 +577,7 @@ def upload_data(file_path, query_number):
     }
     
     headers = {
-        'Cookie': 'ticket=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldmFyYWpAaWJhY3VzdGVjaGxhYnMuaW4iLCJpZCI6NCwidHlwZSI6IkFETUlOIiwiaWF0IjoxNzQ1NTgwOTAxLCJleHAiOjE3NDU2MjQxMDF9.2uJPV4sozxtFlZCqTs2PIgEjUp5hq1NuD1siDBC9KGk'
+        'Cookie': f'ticket={cookie_ticket}',  
     }
     
     payload = payloads.get(query_number, {})
