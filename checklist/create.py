@@ -3,7 +3,11 @@ import json
 import os 
 from dotenv import load_dotenv
 load_dotenv()
+load_dotenv(dotenv_path=r"C:\Users\devar\OneDrive\Documents\Code\GIFT\.env")
+
 AUTH=os.getenv('AUTH')
+
+cookie = os.getenv('GES_COOKIE')
 
 url = "https://greenestep.giftai.co.in/api/v1/csv"
 
