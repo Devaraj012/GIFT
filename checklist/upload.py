@@ -61,7 +61,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    3:"""
+    3: """
         SELECT 
             u.name AS employee_name,
             cir.input AS deploy_count,
@@ -81,7 +81,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    4:"""
+    4: """
         SELECT 
             u.name AS employee_name,
             cir.input AS completed_count,
@@ -101,7 +101,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    5:"""
+    5: """
         SELECT 
             u.name AS employee_name,
             cir.input AS prospects_count,
@@ -121,7 +121,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    6:"""
+    6: """
         SELECT 
             u.name AS employee_name,
             cir.input AS powercut_count,
@@ -141,7 +141,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    7:"""
+    7: """
         SELECT 
         u.name AS employee_name,
         cir.input AS prospects_called,
@@ -158,10 +158,10 @@ queries = {
             User u ON ou.user_id = u.id
         WHERE 
             ci.checklist_name = 'No of prospects called' and cir.input<>0 and u.id in (8,10,27,49)
-
         ORDER BY
-        cir.created_at desc""",
-    8:"""
+        cir.created_at desc
+    """,
+    8: """
         SELECT 
         u.name AS employee_name,
         cir.input AS prospects_qualified,
@@ -178,10 +178,10 @@ queries = {
             User u ON ou.user_id = u.id
         WHERE 
             ci.checklist_name = 'No of prospects qualified' and cir.input<>0 and u.id in (8,10,27,49)
-
         ORDER BY
-            cir.created_at desc """,
-    9:"""
+            cir.created_at desc
+    """,
+    9: """
         SELECT 
         u.name AS employee_name,
         cir.input AS meetings_scheduled,
@@ -198,11 +198,10 @@ queries = {
             User u ON ou.user_id = u.id
         WHERE 
             ci.checklist_name = 'No of meetings scheduled' and cir.input<>0 and u.id in (8,10,27,49)
-
         ORDER BY
-        cir.created_at desc      
+        cir.created_at desc
     """,
-    10:"""
+    10: """
         SELECT 
         u.name AS employee_name,
         cir.input AS meetings_attended,
@@ -219,11 +218,10 @@ queries = {
             User u ON ou.user_id = u.id
         WHERE 
             ci.checklist_name = 'No of meetings attended' and cir.input<>0 and u.id in (8,10,27,16,22,49)
-
         ORDER BY
         cir.created_at desc
     """,
-    11:"""
+    11: """
         SELECT 
         u.name AS employee_name,
         cir.input AS follow_up_calls,
@@ -240,11 +238,10 @@ queries = {
             User u ON ou.user_id = u.id
         WHERE 
             ci.checklist_name = 'No of follow up calls made' and cir.input<>0 and u.id in (8,10,27,49)
-
         ORDER BY
         cir.created_at desc
     """,
-    12:"""
+    12: """
         SELECT 
         u.name AS employee_name,
         cir.input AS closure_made,
@@ -261,11 +258,10 @@ queries = {
             User u ON ou.user_id = u.id
         WHERE 
             ci.checklist_name = 'No of closure made' and cir.input<>0 and u.id in (8,10,27,49)
-
         ORDER BY
         cir.created_at desc
     """,
-    13:"""
+    13: """
         SELECT 
             u.name AS employee_name,
             cir.input AS task_worked,
@@ -285,7 +281,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    14:"""
+    14: """
         SELECT 
             u.name AS employee_name,
             cir.input AS interview_scheduled,
@@ -305,7 +301,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    15:"""
+    15: """
         SELECT 
             u.name AS employee_name,
             cir.input AS level_passed,
@@ -325,7 +321,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    16:"""
+    16: """
          SELECT 
             u.name AS employee_name,
             cir.input AS candiated_selected,
@@ -345,7 +341,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    17:"""
+    17: """
         SELECT 
             u.name AS employee_name,
             cir.input AS candiates_rejected,
@@ -365,7 +361,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    18:"""
+    18: """
         SELECT 
             u.name AS employee_name,
             cir.input AS careersheet_registration,
@@ -385,7 +381,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    19:"""
+    19: """
         SELECT 
             u.name AS employee_name,
             cir.input AS careersheet_applied,
@@ -405,7 +401,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    20:"""
+    20: """
         SELECT 
             u.name AS employee_name,
             cir.input AS invite_send,
@@ -424,29 +420,8 @@ queries = {
             ci.checklist_name = 'No of careersheets invite sent to interview candidates' AND cir.input <> 0
         ORDER BY 
             cir.created_at DESC;
-    """,
-    21:"""
-        SELECT 
-            u.name AS employee_name,
-            cir.input AS technical_screening,
-            cir.created_at AS date
-        FROM 
-            checklist_item_response cir
-        JOIN 
-            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
-        JOIN 
-            checklist_items ci ON ctli.checklist_item_id = ci.id
-        JOIN 
-            Organisation_Users ou ON cir.organisation_user_id = ou.id
-        JOIN 
-            User u ON ou.user_id = u.id
-        WHERE 
-            ci.checklist_name = 'No cleared Technical screening' AND cir.input <> 0
-        ORDER BY 
-            cir.created_at DESC;
-    """
-        
-}
+     """,
+ }
 
 def fetch_and_upload_data(query_number):
     if query_number in queries:
@@ -573,7 +548,7 @@ def upload_data(file_path, query_number):
             'collection_id': '125',
             'type': 'Replace',
             'fieldMapped': 'Object'             
-        }        
+        }    
     }
     
     headers = {
