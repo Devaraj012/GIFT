@@ -3,12 +3,16 @@ import json
 import os 
 from dotenv import load_dotenv
 load_dotenv()
+load_dotenv(dotenv_path=r"C:\Users\devar\OneDrive\Documents\Code\GIFT\.env")
+
 AUTH=os.getenv('AUTH')
+
+cookie = os.getenv('IBT_COOKIE')
 
 url = "https://greenestep.giftai.co.in/api/v1/csv"
 
 headers = {
-  'Cookie': 'ticket=eyJhb5GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldmFyYWpAaWJhY3VzdGVjaGxhYnMuaW4iLCJpZCI6NCwidHlwZSI6IkFETUlOIiwiaWF0IjoxNzQyMjc5MjQ1LCJleHAiOjE3NDIzMjI0NDV9.QdR1vwu5mmtWslJRS3gnD-Wxtvshc93aGlx5QHhglyY',
+  'Cookie': f'ticket={cookie}',
   'Content-Type': 'application/json',
   'Authorization': f'Bearer {AUTH}'
 }
@@ -16,40 +20,16 @@ headers = {
 Collections=[
   {
   "collection_description": "Checklist_Gienie",
-  "collection_name": "No of prospects called",
+  "collection_name": "In person meeting with Prospects",
   "collection_permission": "READ",
   "collection_type": "PUBLIC"
   },
   {
   "collection_description": "Checklist_Gienie",
-  "collection_name": "No of prospects qualified",
+  "collection_name": "In person meeting with Customers",
   "collection_permission": "READ",
   "collection_type": "PUBLIC" 
-  },
-  {
-  "collection_description": "Checklist_Gienie",
-  "collection_name": "No of meetings scheduled",
-  "collection_permission": "READ",
-  "collection_type": "PUBLIC" 
-  },
-  {
-  "collection_description": "Checklist_Gienie",
-  "collection_name": "No of meetings attended",
-  "collection_permission": "READ",
-  "collection_type": "PUBLIC" 
-  },
-  {
-  "collection_description": "Checklist_Gienie",
-  "collection_name": "No of follow up calls made",
-  "collection_permission": "READ",
-  "collection_type": "PUBLIC" 
-  },
-  {
-  "collection_description": "Checklist_Gienie",
-  "collection_name": "No of closure made",
-  "collection_permission": "READ",
-  "collection_type": "PUBLIC" 
-  },      
+  }    
 ]
 
 for collection in Collections:

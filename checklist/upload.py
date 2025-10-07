@@ -2,7 +2,9 @@ import os
 import requests
 import mariadb,pandas as pd
 from dotenv import load_dotenv
-load_dotenv(dotenv_path=r"C:\Users\devar\Documents\Code\GIFT\.env")
+load_dotenv(dotenv_path=r"C:\Users\devar\OneDrive\Documents\Code\GIFT\.env")
+
+load_dotenv()
 
 DB_CONFIG = {
     "host": os.getenv("DB_HOST"),
@@ -12,7 +14,7 @@ DB_CONFIG = {
     "database": os.getenv("DB_NAME")
 }
 
-cookie_ticket = os.getenv("COOKIE_TICKET")
+cookie_ticket = os.getenv("IBT_COOKIE")
 
 conn = mariadb.connect(**DB_CONFIG)
 cursor = conn.cursor(dictionary=True)
@@ -55,11 +57,11 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-             ci.checklist_name = 'No of In-Person Meeting' OR ci.checklist_name='No of Inperson meeting' 
+             (ci.checklist_name = 'No of In-Person Meeting' OR ci.checklist_name='No of Inperson meeting') and cir.input<>0 and u.id in (8,10,27)
         ORDER BY 
             cir.created_at DESC;
     """,
-    3:"""
+    3: """
         SELECT 
             u.name AS employee_name,
             cir.input AS deploy_count,
@@ -79,7 +81,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    4:"""
+    4: """
         SELECT 
             u.name AS employee_name,
             cir.input AS completed_count,
@@ -99,7 +101,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    5:"""
+    5: """
         SELECT 
             u.name AS employee_name,
             cir.input AS prospects_count,
@@ -115,11 +117,11 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-             ci.checklist_name = 'No of Prospects Identified' and cir.input<>0 and u.id in (8,10,27)
+             ci.checklist_name = 'No of Prospects Identified' and cir.input<>0 and u.id in (8,10,27,49)
         ORDER BY 
             cir.created_at DESC;
     """,
-    6:"""
+    6: """
         SELECT 
             u.name AS employee_name,
             cir.input AS powercut_count,
@@ -139,7 +141,7 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
     """,
-    7:"""
+    7: """
         SELECT 
         u.name AS employee_name,
         cir.input AS prospects_called,
@@ -155,11 +157,11 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of prospects called' and cir.input<>0 and u.id in (8,10,27)
-
+            ci.checklist_name = 'No of prospects called' and cir.input<>0 and u.id in (8,10,27,49)
         ORDER BY
-        cir.created_at desc""",
-    8:"""
+        cir.created_at desc
+    """,
+    8: """
         SELECT 
         u.name AS employee_name,
         cir.input AS prospects_qualified,
@@ -175,11 +177,11 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of prospects qualified' and cir.input<>0 and u.id in (8,10,27)
-
+            ci.checklist_name = 'No of prospects qualified' and cir.input<>0 and u.id in (8,10,27,49)
         ORDER BY
-            cir.created_at desc """,
-    9:"""
+            cir.created_at desc
+    """,
+    9: """
         SELECT 
         u.name AS employee_name,
         cir.input AS meetings_scheduled,
@@ -195,12 +197,11 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of meetings scheduled' and cir.input<>0 and u.id in (8,10,27)
-
+            ci.checklist_name = 'No of meetings scheduled' and cir.input<>0 and u.id in (8,10,27,49)
         ORDER BY
-        cir.created_at desc      
+        cir.created_at desc
     """,
-    10:"""
+    10: """
         SELECT 
         u.name AS employee_name,
         cir.input AS meetings_attended,
@@ -216,12 +217,11 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of meetings attended' and cir.input<>0 and u.id in (8,10,27)
-
+            ci.checklist_name = 'No of meetings attended' and cir.input<>0 and u.id in (8,10,27,16,22,49)
         ORDER BY
         cir.created_at desc
     """,
-    11:"""
+    11: """
         SELECT 
         u.name AS employee_name,
         cir.input AS follow_up_calls,
@@ -237,12 +237,11 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of follow up calls made' and cir.input<>0 and u.id in (8,10,27)
-
+            ci.checklist_name = 'No of follow up calls made' and cir.input<>0 and u.id in (8,10,27,49)
         ORDER BY
         cir.created_at desc
     """,
-    12:"""
+    12: """
         SELECT 
         u.name AS employee_name,
         cir.input AS closure_made,
@@ -258,13 +257,171 @@ queries = {
         JOIN 
             User u ON ou.user_id = u.id
         WHERE 
-            ci.checklist_name = 'No of closure made' and cir.input<>0 and u.id in (8,10,27)
-
+            ci.checklist_name = 'No of closure made' and cir.input<>0 and u.id in (8,10,27,49)
         ORDER BY
         cir.created_at desc
-    """
-        
-}
+    """,
+    13: """
+        SELECT 
+            u.name AS employee_name,
+            cir.input AS task_worked,
+            cir.created_at AS date
+        FROM 
+            checklist_item_response cir
+        JOIN 
+            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
+        JOIN 
+            checklist_items ci ON ctli.checklist_item_id = ci.id
+        JOIN 
+            Organisation_Users ou ON cir.organisation_user_id = ou.id
+        JOIN 
+            User u ON ou.user_id = u.id
+        WHERE 
+            (ci.checklist_name = 'No of Tasks worked on' OR ci.checklist_name = 'No of Tasks worked' OR ci.checklist_name='Task Worked') AND cir.input <> 0
+        ORDER BY 
+            cir.created_at DESC;
+    """,
+    14: """
+        SELECT 
+            u.name AS employee_name,
+            cir.input AS interview_scheduled,
+            cir.created_at AS date
+        FROM 
+            checklist_item_response cir
+        JOIN 
+            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
+        JOIN 
+            checklist_items ci ON ctli.checklist_item_id = ci.id
+        JOIN 
+            Organisation_Users ou ON cir.organisation_user_id = ou.id
+        JOIN 
+            User u ON ou.user_id = u.id
+        WHERE 
+            ci.checklist_name = 'No of interview scheduled' AND cir.input <> 0
+        ORDER BY 
+            cir.created_at DESC;
+    """,
+    15: """
+        SELECT 
+            u.name AS employee_name,
+            cir.input AS level_passed,
+            cir.created_at AS date
+        FROM 
+            checklist_item_response cir
+        JOIN 
+            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
+        JOIN 
+            checklist_items ci ON ctli.checklist_item_id = ci.id
+        JOIN 
+            Organisation_Users ou ON cir.organisation_user_id = ou.id
+        JOIN 
+            User u ON ou.user_id = u.id
+        WHERE 
+            ci.checklist_name = 'No of students passed the level' AND cir.input <> 0
+        ORDER BY 
+            cir.created_at DESC;
+    """,
+    16: """
+         SELECT 
+            u.name AS employee_name,
+            cir.input AS candiated_selected,
+            cir.created_at AS date
+        FROM 
+            checklist_item_response cir
+        JOIN 
+            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
+        JOIN 
+            checklist_items ci ON ctli.checklist_item_id = ci.id
+        JOIN 
+            Organisation_Users ou ON cir.organisation_user_id = ou.id
+        JOIN 
+            User u ON ou.user_id = u.id
+        WHERE 
+            ci.checklist_name = 'No of candidates selected' AND cir.input <> 0
+        ORDER BY 
+            cir.created_at DESC;
+    """,
+    17: """
+        SELECT 
+            u.name AS employee_name,
+            cir.input AS candiates_rejected,
+            cir.created_at AS date
+        FROM 
+            checklist_item_response cir
+        JOIN 
+            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
+        JOIN 
+            checklist_items ci ON ctli.checklist_item_id = ci.id
+        JOIN 
+            Organisation_Users ou ON cir.organisation_user_id = ou.id
+        JOIN 
+            User u ON ou.user_id = u.id
+        WHERE 
+            ci.checklist_name = 'No of candidates Rejected' AND cir.input <> 0
+        ORDER BY 
+            cir.created_at DESC;
+    """,
+    18: """
+        SELECT 
+            u.name AS employee_name,
+            cir.input AS careersheet_registration,
+            cir.created_at AS date
+        FROM 
+            checklist_item_response cir
+        JOIN 
+            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
+        JOIN 
+            checklist_items ci ON ctli.checklist_item_id = ci.id
+        JOIN 
+            Organisation_Users ou ON cir.organisation_user_id = ou.id
+        JOIN 
+            User u ON ou.user_id = u.id
+        WHERE 
+            ci.checklist_name = 'No of registration in careersheets' AND cir.input <> 0
+        ORDER BY 
+            cir.created_at DESC;
+    """,
+    19: """
+        SELECT 
+            u.name AS employee_name,
+            cir.input AS careersheet_applied,
+            cir.created_at AS date
+        FROM 
+            checklist_item_response cir
+        JOIN 
+            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
+        JOIN 
+            checklist_items ci ON ctli.checklist_item_id = ci.id
+        JOIN 
+            Organisation_Users ou ON cir.organisation_user_id = ou.id
+        JOIN 
+            User u ON ou.user_id = u.id
+        WHERE 
+            ci.checklist_name = 'No of students applied on careersheets' AND cir.input <> 0
+        ORDER BY 
+            cir.created_at DESC;
+    """,
+    20: """
+        SELECT 
+            u.name AS employee_name,
+            cir.input AS invite_send,
+            cir.created_at AS date
+        FROM 
+            checklist_item_response cir
+        JOIN 
+            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
+        JOIN 
+            checklist_items ci ON ctli.checklist_item_id = ci.id
+        JOIN 
+            Organisation_Users ou ON cir.organisation_user_id = ou.id
+        JOIN 
+            User u ON ou.user_id = u.id
+        WHERE 
+            ci.checklist_name = 'No of careersheets invite sent to interview candidates' AND cir.input <> 0
+        ORDER BY 
+            cir.created_at DESC;
+     """,
+ }
 
 def fetch_and_upload_data(query_number):
     if query_number in queries:
@@ -346,11 +503,56 @@ def upload_data(file_path, query_number):
             'collection_id': '113',
             'type': 'Replace',
             'fieldMapped': 'Object'             
-        }        
+        },
+        13:{
+            'collection_id': '117',
+            'type': 'Replace',
+            'fieldMapped': 'Object'             
+        },
+        14:{
+            'collection_id': '118',
+            'type': 'Replace',
+            'fieldMapped': 'Object'             
+        },
+        15:{
+            'collection_id': '119',
+            'type': 'Replace',
+            'fieldMapped': 'Object'             
+        },
+        16:{
+            'collection_id': '120',
+            'type': 'Replace',
+            'fieldMapped': 'Object'             
+        },
+        17:{
+            'collection_id': '121',
+            'type': 'Replace',
+            'fieldMapped': 'Object'             
+        },
+        18:{
+            'collection_id': '122',
+            'type': 'Replace',
+            'fieldMapped': 'Object'             
+        },
+        19:{
+            'collection_id': '123',
+            'type': 'Replace',
+            'fieldMapped': 'Object'             
+        },
+        20:{
+            'collection_id': '124',
+            'type': 'Replace',
+            'fieldMapped': 'Object'             
+        },
+        21:{
+            'collection_id': '125',
+            'type': 'Replace',
+            'fieldMapped': 'Object'             
+        }    
     }
     
     headers = {
-        'Cookie': 'ticket=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRldmFyYWpAaWJhY3VzdGVjaGxhYnMuaW4iLCJpZCI6NCwidHlwZSI6IkFETUlOIiwiaWF0IjoxNzQyNTM4Mzg0LCJleHAiOjE3NDI1ODE1ODR9.M2FXM5VskT1T7VHDouULwiVfOTnlsj5cpcyu0odrvKc'
+        'Cookie': f'ticket={cookie_ticket}',  
     }
     
     payload = payloads.get(query_number, {})

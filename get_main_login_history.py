@@ -1,9 +1,5 @@
 import csv
 import requests
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
 # TO GET DATA
 # The API endpoint
 url = "https://gac.giftai.co.in/api/v1/activity/loginhistory"
@@ -13,7 +9,7 @@ response = requests.post(url)
 
 # To MAP THE DATA
 # Your Bearer token
-bearer_token=os.getenv('TOKEN')
+bearer_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiREVNTyBTRVJWRVIiLCJpZCI6InVwZGF0ZV9pZF80MzMxMi4yMjQ2MTU3MzM2NyIsImlhdCI6MTcyNjY1MTA2MH0.rmCXjhp16Sg7wo4elSAjgLoHgF7KhhTjDUfzHgsotqY"
 
 # Headers with Authorization
 headers = {
@@ -22,6 +18,7 @@ headers = {
 
 data = {
     "domain_name": "gmail"
+
 }
 
 # TO SEND THE DATA TO CENTRAL GAC_SERVER
@@ -32,6 +29,7 @@ response = requests.get(url, headers=headers,data=data)
 resp_data = response.json()
 
 data =resp_data['data'] 
+
 
 with open('giftHistories_02-01-2025.csv', 'w', newline='') as csvfile:
     fieldnames = ['id' ,
