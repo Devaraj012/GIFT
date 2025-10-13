@@ -421,6 +421,27 @@ queries = {
         ORDER BY 
             cir.created_at DESC;
      """,
+    21:"""
+        SELECT 
+            u.name AS employee_name,
+            cir.input AS invite_send,
+            cir.created_at AS date
+        FROM 
+            checklist_item_response cir
+        JOIN 
+            checklist_template_linked_items ctli ON cir.checklist_template_linked_items_id = ctli.id
+        JOIN 
+            checklist_items ci ON ctli.checklist_item_id = ci.id
+        JOIN 
+            Organisation_Users ou ON cir.organisation_user_id = ou.id
+        JOIN 
+            User u ON ou.user_id = u.id
+        WHERE 
+            ci.checklist_name = 'No cleared Technical screening' AND cir.input <> 0
+        ORDER BY 
+            cir.created_at DESC;
+    
+    """
  }
 
 def fetch_and_upload_data(query_number):
